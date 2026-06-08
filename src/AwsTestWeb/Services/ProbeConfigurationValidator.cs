@@ -10,7 +10,7 @@ public static class ProbeConfigurationValidator
 
         if (string.IsNullOrWhiteSpace(options.Region))
         {
-            missing.Add("AWS_REGION or RDS_REGION");
+            missing.Add("RDS_REGION, AWS_REGION, or AWS_DEFAULT_REGION");
         }
 
         if (string.IsNullOrWhiteSpace(options.Host))

@@ -13,7 +13,7 @@ public class ProbeConfigurationValidatorTests
         var missingSettings = ProbeConfigurationValidator.GetMissingRdsSettings(options);
 
         Assert.Equal(
-            new[] { "AWS_REGION or RDS_REGION", "RDS_HOST", "RDS_DATABASE", "RDS_USERNAME" },
+            new[] { "RDS_REGION, AWS_REGION, or AWS_DEFAULT_REGION", "RDS_HOST", "RDS_DATABASE", "RDS_USERNAME" },
             missingSettings);
     }
 

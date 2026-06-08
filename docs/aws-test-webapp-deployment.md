@@ -35,7 +35,9 @@ Set these on the ECS Express Mode service:
 
 | Variable | Required | Notes |
 | --- | --- | --- |
-| `AWS_REGION` | Yes | Region that contains RDS and Secrets Manager |
+| `RDS_REGION` | Conditionally | Checked first for the AWS region |
+| `AWS_REGION` | Conditionally | Used when `RDS_REGION` is not set |
+| `AWS_DEFAULT_REGION` | Conditionally | Used when neither `RDS_REGION` nor `AWS_REGION` is set |
 | `RDS_HOST` | Yes | Use the real RDS endpoint hostname |
 | `RDS_PORT` | No | Defaults to `5432` |
 | `RDS_DATABASE` | Yes | Database name |
@@ -45,6 +47,8 @@ Set these on the ECS Express Mode service:
 | `RDS_ROOT_CERTIFICATE` | No | Path to an RDS CA bundle if you want explicit certificate validation |
 | `SECRET_ID` | Yes | Secret name or ARN |
 | `SECRET_JSON_KEY` | No | Defaults to `iPhone passcode` |
+
+At least one of `RDS_REGION`, `AWS_REGION`, or `AWS_DEFAULT_REGION` must be set.
 
 ## IAM roles you need
 
