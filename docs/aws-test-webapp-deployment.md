@@ -15,6 +15,8 @@ The home page exposes two buttons:
 
 AWS now recommends **Amazon ECS Express Mode** for simple public containerized web apps. It provisions a Fargate-based ECS service, HTTPS load balancing, scaling, and supporting networking for you, while keeping the resources in your own account.
 
+This app is intended to listen on **container port `8080`** inside ECS. Keep the load balancer listener on `80` or `443`, but make sure the ECS service, target group, and health check all point at container port `8080`.
+
 This repo now targets:
 
 1. **CodeBuild** builds the image in AWS using `buildspec.ecs-express.yml`
@@ -194,12 +196,13 @@ In the ECS console:
 2. Create a new service from a **private ECR image**
 3. Choose the image built by CodeBuild
 4. Set the container port to `8080`
-5. Select or create the **task execution role**
-6. Select the **infrastructure role**
-7. Select the VPC, subnets, and task security group that can reach RDS
-8. Attach the **task role** so the app can call RDS IAM auth and Secrets Manager
-9. Set the environment variables listed above
-10. Create the service and wait for ECS Express Mode to finish provisioning
+5. Confirm the load balancer health check path is `/health` and the target port is `8080`
+6. Select or create the **task execution role**
+7. Select the **infrastructure role**
+8. Select the VPC, subnets, and task security group that can reach RDS
+9. Attach the **task role** so the app can call RDS IAM auth and Secrets Manager
+10. Set the environment variables listed above
+11. Create the service and wait for ECS Express Mode to finish provisioning
 
 ### 10. Test the app
 
