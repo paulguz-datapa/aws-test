@@ -38,7 +38,11 @@ builder.Services.AddSingleton(sp =>
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
+if (builder.Configuration.GetValue("DetailedErrors", true))
+{
+    app.UseDeveloperExceptionPage();
+}
+else
 {
     app.UseExceptionHandler("/Error");
 }
