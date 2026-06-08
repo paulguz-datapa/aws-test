@@ -59,7 +59,8 @@ public sealed class SecretsProbeService(
             return new ProbeResult(
                 false,
                 "Secrets test failed",
-                "The configured secret could not be found.");
+                "The configured secret could not be found.",
+                ex.ToString());
         }
         catch (DecryptionFailureException ex)
         {
@@ -67,7 +68,8 @@ public sealed class SecretsProbeService(
             return new ProbeResult(
                 false,
                 "Secrets test failed",
-                "The secret could not be decrypted. Check the runtime role and KMS permissions.");
+                "The secret could not be decrypted. Check the runtime role and KMS permissions.",
+                ex.ToString());
         }
         catch (InvalidRequestException ex)
         {
@@ -75,7 +77,8 @@ public sealed class SecretsProbeService(
             return new ProbeResult(
                 false,
                 "Secrets test failed",
-                "AWS rejected the secret read request. Check the secret configuration and ECS service region.");
+                "AWS rejected the secret read request. Check the secret configuration and ECS service region.",
+                ex.ToString());
         }
         catch (InvalidParameterException ex)
         {
@@ -83,7 +86,8 @@ public sealed class SecretsProbeService(
             return new ProbeResult(
                 false,
                 "Secrets test failed",
-                "The configured secret id or key name is invalid.");
+                "The configured secret id or key name is invalid.",
+                ex.ToString());
         }
         catch (AmazonSecretsManagerException ex)
         {
@@ -91,7 +95,8 @@ public sealed class SecretsProbeService(
             return new ProbeResult(
                 false,
                 "Secrets test failed",
-                "Could not read the secret from Secrets Manager. Check the runtime role permissions and region.");
+                "Could not read the secret from Secrets Manager. Check the runtime role permissions and region.",
+                ex.ToString());
         }
         catch (JsonException ex)
         {
@@ -99,7 +104,8 @@ public sealed class SecretsProbeService(
             return new ProbeResult(
                 false,
                 "Secrets test failed",
-                "The secret was read, but its value is not valid JSON.");
+                "The secret was read, but its value is not valid JSON.",
+                ex.ToString());
         }
     }
 }

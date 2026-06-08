@@ -29,6 +29,10 @@
                 <div class="alert @Model.RdsResult.AlertCssClass mt-4 mb-0" role="alert">
                     <h3 class="h5">@Model.RdsResult.Heading</h3>
                     <p class="mb-0">@Model.RdsResult.Message</p>
+                    @if (!string.IsNullOrWhiteSpace(Model.RdsResult.Details))
+                    {
+                        <pre class="mt-3 mb-0 small">@Model.RdsResult.Details</pre>
+                    }
                 </div>
             }
         </section>
@@ -50,6 +54,10 @@
                 <div class="alert @Model.SecretResult.AlertCssClass mt-4 mb-0" role="alert">
                     <h3 class="h5">@Model.SecretResult.Heading</h3>
                     <p class="mb-0">@Model.SecretResult.Message</p>
+                    @if (!string.IsNullOrWhiteSpace(Model.SecretResult.Details))
+                    {
+                        <pre class="mt-3 mb-0 small">@Model.SecretResult.Details</pre>
+                    }
                 </div>
             }
         </section>

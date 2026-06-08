@@ -72,7 +72,8 @@ public sealed class RdsProbeService(
             return new ProbeResult(
                 false,
                 "RDS test failed",
-                "The RDS configuration is invalid. Check the host name, region, and connection settings.");
+                "The RDS configuration is invalid. Check the host name, region, and connection settings.",
+                ex.ToString());
         }
         catch (AmazonClientException ex)
         {
@@ -80,7 +81,8 @@ public sealed class RdsProbeService(
             return new ProbeResult(
                 false,
                 "RDS test failed",
-                "Could not generate an IAM authentication token. Check the app role and AWS region configuration.");
+                "Could not generate an IAM authentication token. Check the app role and AWS region configuration.",
+                ex.ToString());
         }
         catch (NpgsqlException ex)
         {
@@ -88,7 +90,8 @@ public sealed class RdsProbeService(
             return new ProbeResult(
                 false,
                 "RDS test failed",
-                "Could not connect to PostgreSQL with IAM authentication. Check network access, IAM DB auth, TLS, and database permissions.");
+                "Could not connect to PostgreSQL with IAM authentication. Check network access, IAM DB auth, TLS, and database permissions.",
+                ex.ToString());
         }
         catch (TimeoutException ex)
         {
@@ -96,7 +99,8 @@ public sealed class RdsProbeService(
             return new ProbeResult(
                 false,
                 "RDS test timed out",
-                "Connecting to PostgreSQL timed out. Check the ECS Express networking, security groups, and database endpoint.");
+                "Connecting to PostgreSQL timed out. Check the ECS Express networking, security groups, and database endpoint.",
+                ex.ToString());
         }
     }
 
