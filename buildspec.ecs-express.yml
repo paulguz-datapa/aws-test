@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    APP_REPO: "aws-rds-secrets-test-web"
+    APP_REPO: "paulguz/iam-test"
     DOCKERFILE_PATH: "Dockerfile.ecs-express"
 
 phases:
