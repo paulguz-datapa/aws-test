@@ -1,0 +1,32 @@
+version: 0.2
+
+env:
+  variables:
+    APP_REPO: "aws-rds-secrets-test-web"
+    DOCKERFILE_PATH: "Dockerfile.ecs-express"
+
+phases:
+  pre_build:
+    commands:
+      - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+      - ECR_REGISTRY=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${IMAGE_TAG:-latest}
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+
+  build:
+    commands:
+      - echo "Building ECS Express image $APP_REPO:$IMAGE_TAG"
+      - docker build -f $DOCKERFILE_PATH -t $APP_REPO:$IMAGE_TAG .
+      - docker tag $APP_REPO:$IMAGE_TAG $ECR_REGISTRY/$APP_REPO:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo "Pushing image to ECR"
+      - docker push $ECR_REGISTRY/$APP_REPO:$IMAGE_TAG
+      - printf '{"imageUri":"%s","imageTag":"%s"}' $ECR_REGISTRY/$APP_REPO:$IMAGE_TAG $IMAGE_TAG > build-output.json
+      - cat build-output.json
+
+artifacts:
+  files:
+    - build-output.json

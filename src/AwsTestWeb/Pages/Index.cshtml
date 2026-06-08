@@ -1,0 +1,81 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "AWS connectivity tests";
+}
+
+<section class="hero">
+    <span class="hero-badge">ASP.NET 10 + ECS Express Mode</span>
+    <h1 class="display-5 fw-semibold mt-3">AWS RDS and Secrets Manager connectivity test</h1>
+    <p class="lead text-secondary mt-3 mb-0">
+        Use this page to verify PostgreSQL IAM database authentication and Secrets Manager access from the running app role.
+    </p>
+</section>
+
+<div class="row g-4 mt-1">
+    <div class="col-lg-6">
+        <section class="test-card h-100">
+            <div class="test-card-header">
+                <h2>Test RDS access</h2>
+                <p>Connects to PostgreSQL with an IAM auth token and returns the first <code>id</code> from <code>dev.dashboards</code>.</p>
+            </div>
+
+            <form method="post" asp-page-handler="TestRds" class="d-grid gap-3">
+                <button class="btn btn-primary btn-lg" type="submit">Run RDS test</button>
+            </form>
+
+            @if (Model.RdsResult is not null)
+            {
+                <div class="alert @Model.RdsResult.AlertCssClass mt-4 mb-0" role="alert">
+                    <h3 class="h5">@Model.RdsResult.Heading</h3>
+                    <p class="mb-0">@Model.RdsResult.Message</p>
+                </div>
+            }
+        </section>
+    </div>
+
+    <div class="col-lg-6">
+        <section class="test-card h-100">
+            <div class="test-card-header">
+                <h2>Test Secrets Manager access</h2>
+                <p>Reads the configured secret value, parses the JSON, and confirms the <code>iPhone passcode</code> key exists without revealing the value.</p>
+            </div>
+
+            <form method="post" asp-page-handler="TestSecret" class="d-grid gap-3">
+                <button class="btn btn-outline-primary btn-lg" type="submit">Run Secrets test</button>
+            </form>
+
+            @if (Model.SecretResult is not null)
+            {
+                <div class="alert @Model.SecretResult.AlertCssClass mt-4 mb-0" role="alert">
+                    <h3 class="h5">@Model.SecretResult.Heading</h3>
+                    <p class="mb-0">@Model.SecretResult.Message</p>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+<section class="config-card mt-4">
+    <h2>Required environment variables</h2>
+    <div class="row g-3 mt-1">
+        <div class="col-md-6">
+            <ul class="config-list">
+                <li><code>AWS_REGION</code></li>
+                <li><code>RDS_HOST</code></li>
+                <li><code>RDS_PORT</code> (defaults to <code>5432</code>)</li>
+                <li><code>RDS_DATABASE</code></li>
+                <li><code>RDS_USERNAME</code></li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <ul class="config-list">
+                <li><code>SECRET_ID</code></li>
+                <li><code>SECRET_JSON_KEY</code> (defaults to <code>iPhone passcode</code>)</li>
+                <li><code>RDS_QUERY</code> (optional override)</li>
+                <li><code>RDS_SSL_MODE</code> (defaults to <code>Require</code>)</li>
+                <li><code>RDS_ROOT_CERTIFICATE</code> (optional)</li>
+            </ul>
+        </div>
+    </div>
+</section>

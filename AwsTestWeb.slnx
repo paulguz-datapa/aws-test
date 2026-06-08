@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AwsTestWeb/AwsTestWeb.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AwsTestWeb.Tests/AwsTestWeb.Tests.csproj" />
+  </Folder>
+</Solution>

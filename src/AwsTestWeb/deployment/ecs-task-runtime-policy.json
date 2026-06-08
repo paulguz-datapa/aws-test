@@ -1,0 +1,38 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowRdsIamConnect",
+      "Effect": "Allow",
+      "Action": "rds-db:connect",
+      "Resource": "arn:aws:rds-db:<region>:<account-id>:dbuser:<db-or-cluster-resource-id>/<db-username>"
+    },
+    {
+      "Sid": "AllowReadWriteSpecificSecretValue",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:PutSecretValue",
+        "secretsmanager:DescribeSecret"
+      ],
+      "Resource": "arn:aws:secretsmanager:<region>:<account-id>:secret:<secret-name>*"
+    },
+    {
+      "Sid": "OptionalSecretMetadataUpdates",
+      "Effect": "Allow",
+      "Action": "secretsmanager:UpdateSecret",
+      "Resource": "arn:aws:secretsmanager:<region>:<account-id>:secret:<secret-name>*"
+    },
+    {
+      "Sid": "OptionalKmsForEncryptedSecret",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:DescribeKey"
+      ],
+      "Resource": "arn:aws:kms:<region>:<account-id>:key/<kms-key-id>"
+    }
+  ]
+}

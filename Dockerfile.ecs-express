@@ -1,0 +1,28 @@
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+COPY src/AwsTestWeb/AwsTestWeb.csproj src/AwsTestWeb/
+RUN dotnet restore src/AwsTestWeb/AwsTestWeb.csproj --source https://api.nuget.org/v3/index.json
+
+COPY src/AwsTestWeb/ src/AwsTestWeb/
+RUN dotnet publish src/AwsTestWeb/AwsTestWeb.csproj -c Release -o /app/publish --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=build /app/publish .
+
+ENV ASPNETCORE_URLS=http://0.0.0.0:8080
+ENV ASPNETCORE_ENVIRONMENT=Production
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+    CMD curl --fail http://localhost:8080/health || exit 1
+
+ENTRYPOINT ["dotnet", "AwsTestWeb.dll"]
