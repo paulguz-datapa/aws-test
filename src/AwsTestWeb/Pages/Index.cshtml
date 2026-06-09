@@ -66,24 +66,24 @@
 
 <section class="config-card mt-4">
     <h2>Required environment variables</h2>
-    <div class="row g-3 mt-1">
-        <div class="col-md-6">
-            <ul class="config-list">
-                <li><code>RDS_REGION</code>, <code>AWS_REGION</code>, or <code>AWS_DEFAULT_REGION</code> (one of these is required)</li>
-                <li><code>RDS_HOST</code></li>
-                <li><code>RDS_PORT</code> (defaults to <code>5432</code>)</li>
-                <li><code>RDS_DATABASE</code></li>
-                <li><code>RDS_USERNAME</code></li>
-            </ul>
-        </div>
-        <div class="col-md-6">
-            <ul class="config-list">
-                <li><code>SECRET_ID</code></li>
-                <li><code>SECRET_JSON_KEY</code> (optional, defaults to <code>iPhone passcode</code>)</li>
-                <li><code>RDS_QUERY</code> (optional override)</li>
-                <li><code>RDS_SSL_MODE</code> (defaults to <code>Require</code>)</li>
-                <li><code>RDS_ROOT_CERTIFICATE</code> (optional)</li>
-            </ul>
-        </div>
+    <p class="text-secondary mt-3 mb-0">These are the effective values loaded by the running app.</p>
+    <div class="table-responsive mt-3">
+        <table class="table table-sm align-middle mb-0">
+            <thead>
+                <tr>
+                    <th scope="col">Setting</th>
+                    <th scope="col">Value in use</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.RequiredEnvironmentValues)
+            {
+                <tr>
+                    <th scope="row"><code>@item.Name</code></th>
+                    <td><code>@item.Value</code></td>
+                </tr>
+            }
+            </tbody>
+        </table>
     </div>
 </section>

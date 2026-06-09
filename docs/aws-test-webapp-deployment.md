@@ -33,22 +33,22 @@ The intended path is to build the image in **AWS CodeBuild** and deploy it from 
 
 Set these on the ECS Express Mode service:
 
-| Variable | Required | Notes |
-| --- | --- | --- |
-| `RDS_REGION` | Conditionally | Checked first for the AWS region |
-| `AWS_REGION` | Conditionally | Used when `RDS_REGION` is not set |
-| `AWS_DEFAULT_REGION` | Conditionally | Used when neither `RDS_REGION` nor `AWS_REGION` is set |
-| `RDS_HOST` | Yes | Use the real RDS endpoint hostname |
-| `RDS_PORT` | No | Defaults to `5432` |
-| `RDS_DATABASE` | Yes | Database name |
-| `RDS_USERNAME` | Yes | PostgreSQL user granted `rds_iam` |
-| `RDS_QUERY` | No | Defaults to `select id from dev.dashboards order by id limit 1` |
-| `RDS_SSL_MODE` | No | Defaults to `Require` |
-| `RDS_ROOT_CERTIFICATE` | No | Path to an RDS CA bundle if you want explicit certificate validation |
-| `SECRET_ID` | Yes | Secret name or ARN |
-| `SECRET_JSON_KEY` | No | Defaults to `iPhone passcode` |
+| Variable | Required | Current value | Notes |
+| --- | --- | --- | --- |
+| `RDS_REGION` | Conditionally | not set | Checked first for the AWS region |
+| `AWS_REGION` | Conditionally | `eu-west-1` | Used because `RDS_REGION` is not set |
+| `AWS_DEFAULT_REGION` | Conditionally | not set | Fallback when neither `RDS_REGION` nor `AWS_REGION` is set |
+| `RDS_HOST` | Yes | `inmydata-iam-test.c4zvtfvh20nj.eu-west-1.rds.amazonaws.com` | Use the real RDS endpoint hostname |
+| `RDS_PORT` | No | `5432` | Defaults to `5432` |
+| `RDS_DATABASE` | Yes | `inmydata_web_dev` | Database name |
+| `RDS_USERNAME` | Yes | `inmydata` | PostgreSQL user granted `rds_iam` |
+| `RDS_QUERY` | No | `select id from dev.dashboards order by id limit 1` | Optional override |
+| `RDS_SSL_MODE` | No | `Require` | Defaults to `Require` |
+| `RDS_ROOT_CERTIFICATE` | No | not set | Path to an RDS CA bundle if you want explicit certificate validation |
+| `SECRET_ID` | Yes | `dev_email_password` | Secret name or ARN |
+| `SECRET_JSON_KEY` | No | `iPhone passcode` | Default value because the variable is not set |
 
-At least one of `RDS_REGION`, `AWS_REGION`, or `AWS_DEFAULT_REGION` must be set.
+At runtime the app uses `eu-west-1` for the region, sourced from `AWS_REGION`.
 
 ## IAM roles you need
 
